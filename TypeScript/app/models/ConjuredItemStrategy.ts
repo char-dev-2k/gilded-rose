@@ -5,7 +5,7 @@ export class ConjuredItemStrategy extends ItemStrategy {
     this.decreaseQuality(2);
     this.decrementSellIn();
 
-    if (this.getSellIn() < 0) {
+    if (this.isExpired()) {
       this.decreaseQuality(2);
     }
   }

@@ -5,7 +5,7 @@ export class BasicItemStrategy extends ItemStrategy {
     this.decreaseQuality();
     this.decrementSellIn();
 
-    if (this.getSellIn() < 0) {
+    if (this.isExpired()) {
       this.decreaseQuality();
     }
   }

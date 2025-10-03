@@ -4,17 +4,17 @@ export class BackstageItemStrategy extends ItemStrategy {
   updateQuality(): void {
     this.increaseQuality();
 
-    if (this.item.sellIn <= 10) {
+    if (this.getSellIn() <= 10) {
       this.increaseQuality();
     }
 
-    if (this.item.sellIn <= 5) {
+    if (this.getSellIn() <= 5) {
       this.increaseQuality();
     }
 
     this.decrementSellIn();
 
-    if (this.item.sellIn < 0) {
+    if (this.getSellIn() < 0) {
       this.item.quality = 0;
     }
   }

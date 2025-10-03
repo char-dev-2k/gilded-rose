@@ -4,23 +4,44 @@ import { BackstageItemStrategy } from "@/models/BackstageItemStrategy";
 import { SulfurasItemStrategy } from "@/models/SulfurasItemStrategy";
 import { BasicItemStrategy } from "@/models/BasicItemStrategy";
 import { ItemStrategy } from "@/models/ItemStrategy";
+import { ConjuredItemStrategy } from "@/models/ConjuredItemStrategy";
 
-type InventoryItemFactory = (item: Item) => ItemStrategy;
+const AGED_BRIE = "aged brie";
+const BACKSTAGE_PASSES = "backstage passes";
+const SULFURAS = "sulfuras";
+const CONJURED = "conjured";
 
-const AGED_BRIE = "Aged Brie";
-const BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
-const SULFURAS = "Sulfuras, Hand of Ragnaros";
-
-const strategyFactories: Record<string, InventoryItemFactory> = {
-  [AGED_BRIE]: (item) => new BrieItemStrategy(item),
-  [BACKSTAGE_PASSES]: (item) => new BackstageItemStrategy(item),
-  [SULFURAS]: (item) => new SulfurasItemStrategy(item),
+type StrategyRule = {
+  matches: (name: string) => boolean;
+  build: (item: Item) => ItemStrategy;
 };
 
+const STRATEGY_RULES: StrategyRule[] = [
+  {
+    matches: (name) => name.includes(CONJURED),
+    build: (item) => new ConjuredItemStrategy(item),
+  },
+  {
+    matches: (name) => name.includes(AGED_BRIE),
+    build: (item) => new BrieItemStrategy(item),
+  },
+  {
+    matches: (name) => name.includes(BACKSTAGE_PASSES),
+    build: (item) => new BackstageItemStrategy(item),
+  },
+  {
+    matches: (name) => name.includes(SULFURAS),
+    build: (item) => new SulfurasItemStrategy(item),
+  },
+];
+
 export function createInventoryItem(item: Item): ItemStrategy {
-  const factory = strategyFactories[item.name];
-  if (factory) {
-    return factory(item);
+  const normalized = item.name.toLowerCase().trim();
+
+  for (const rule of STRATEGY_RULES) {
+    if (rule.matches(normalized)) {
+      return rule.build(item);
+    }
   }
 
   return new BasicItemStrategy(item);

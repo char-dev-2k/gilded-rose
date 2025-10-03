@@ -5,7 +5,7 @@ export class BrieItemStrategy extends ItemStrategy {
     this.increaseQuality();
     this.decrementSellIn();
 
-    if (this.item.sellIn < 0) {
+    if (this.getSellIn() < 0) {
       this.increaseQuality();
     }
   }

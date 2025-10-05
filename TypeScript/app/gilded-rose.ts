@@ -1,4 +1,5 @@
-import { createInventoryItem } from "./factories/InventoryItemFactory";
+import { createStoreItem } from "./factories/StoreItemFactory";
+import { isUpdatableItem, UpdatableItem } from "./interfaces/UpdatableItem";
 
 export class Item {
   name: string;
@@ -20,9 +21,10 @@ export class GildedRose {
   }
 
   updateQuality() {
-    for (const item of this.items) {
-      createInventoryItem(item).updateQuality();
-    }
+    this.items
+      .map(i => createStoreItem(i))
+      .filter(i => isUpdatableItem(i as any))
+      .forEach(i => (i as any as UpdatableItem).updateQuality())
     return this.items;
   }
 }

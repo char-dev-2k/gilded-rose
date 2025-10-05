@@ -1,14 +1,15 @@
-import { ItemStrategy } from "./ItemStrategy";
+import { UpdatableItem } from "@/interfaces/UpdatableItem";
+import { StoreItem } from "./StoreItem";
 
-export class BackstageItemStrategy extends ItemStrategy {
+export class BackstageItemStrategy extends StoreItem implements UpdatableItem {
   updateQuality(): void {
     this.increaseQuality();
 
-    if (this.has10DaysOrLess()) {
+    if (this.hasLessOrEqualSellInDays(10)) {
       this.increaseQuality();
     }
 
-    if (this.has5DaysOrLess()) {
+    if (this.hasLessOrEqualSellInDays(5)) {
       this.increaseQuality();
     }
 
@@ -19,11 +20,4 @@ export class BackstageItemStrategy extends ItemStrategy {
     }
   }
 
-  private has10DaysOrLess() {
-    return this.getSellIn() <= 10
-  }
-
-  private has5DaysOrLess() {
-    return this.getSellIn() <= 5
-  }
 }

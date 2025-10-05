@@ -3,8 +3,8 @@ import { BrieItemStrategy } from "@/models/BrieItemStrategy";
 import { BackstageItemStrategy } from "@/models/BackstageItemStrategy";
 import { SulfurasItemStrategy } from "@/models/SulfurasItemStrategy";
 import { BasicItemStrategy } from "@/models/BasicItemStrategy";
-import { ItemStrategy } from "@/models/ItemStrategy";
 import { ConjuredItemStrategy } from "@/models/ConjuredItemStrategy";
+import { StoreItem } from "@/models/StoreItem";
 
 const AGED_BRIE = "aged brie";
 const BACKSTAGE_PASSES = "backstage passes";
@@ -13,7 +13,7 @@ const CONJURED = "conjured";
 
 type StrategyRule = {
   matches: (name: string) => boolean;
-  build: (item: Item) => ItemStrategy;
+  build: (item: Item) => StoreItem
 };
 
 const STRATEGY_RULES: StrategyRule[] = [
@@ -35,7 +35,7 @@ const STRATEGY_RULES: StrategyRule[] = [
   },
 ];
 
-export function createInventoryItem(item: Item): ItemStrategy {
+export function createStoreItem(item: Item) {
   const normalized = item.name.toLowerCase().trim();
 
   for (const rule of STRATEGY_RULES) {

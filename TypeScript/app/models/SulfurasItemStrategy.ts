@@ -1,7 +1,4 @@
-import { ItemStrategy } from "./ItemStrategy";
+import { StoreItem } from "@/models/StoreItem";
 
-export class SulfurasItemStrategy extends ItemStrategy {
-  updateQuality(): void {
-    // Legendary items do not change.
-  }
+export class SulfurasItemStrategy extends StoreItem {
 }

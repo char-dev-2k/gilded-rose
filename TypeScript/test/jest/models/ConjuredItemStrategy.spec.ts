@@ -2,23 +2,25 @@ import { ConjuredItemStrategy } from "@/models/ConjuredItemStrategy";
 import { Item } from "@/gilded-rose";
 
 describe("ConjuredItemStrategy", () => {
+
+  const createItem = (sellIn: number, quality: number) => {
+    return new Item("foo", sellIn, quality);
+  };
+
   it("Quality decreases by 2 every day", () => {
-    const item = new Item("Conjured", 1, 1);
-    const conjuredItem = new ConjuredItemStrategy(item)
+    const conjuredItem = new ConjuredItemStrategy(createItem(1, 1))
     conjuredItem.updateQuality()
     expect(conjuredItem.getQuality()).toBe(0);
   });
 
   it("Quality can't be negative", () => {
-    const item = new Item("Conjured", 1, 0);
-    const conjuredItem = new ConjuredItemStrategy(item)
+    const conjuredItem = new ConjuredItemStrategy(createItem(1, 0))
     conjuredItem.updateQuality()
     expect(conjuredItem.getQuality()).toBe(0);
   });
 
   it("Expired items degrade twice as fast", () => {
-    const item = new Item("Conjured", 0, 10);
-    const conjuredItem = new ConjuredItemStrategy(item)
+    const conjuredItem = new ConjuredItemStrategy(createItem(0, 10))
     conjuredItem.updateQuality()
     expect(conjuredItem.getQuality()).toBe(6);
   });
